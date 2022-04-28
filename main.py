@@ -1,31 +1,30 @@
 import tkinter as tk
 
-
 class GraphingApp:
     def __init__(self, root=None):
         self.root = root
-        self.frame = tk.Frame(self.root, width=600, height=400)
+        self.frame = tk.Frame(self.root, width=screen_width, height=screen_height)
         self.frame.pack()
-        tk.Button(self.frame,text="Start Graphing", command=self.make_graphingWindow).place(x=240, y=200)
-        tk.Label(self.frame, text="GraphX", font=("Helvetica", 16)).place(x=250, y=50)
-        tk.Label(self.frame, text="The Premiere 3D Graphing Calculator", font=("Helvetica", 11)).place(x=150, y=100)
+        tk.Button(self.frame,text="Start Graphing", command=self.make_graphingWindow).place(relx=0.4, rely=0.5)
+        tk.Label(self.frame, text="GraphX", font=("Helvetica", 16)).place(relx=0.416, rely=0.125)
+        tk.Label(self.frame, text="The Premiere 3D Graphing Calculator", font=("Helvetica", 11)).place(relx=0.25, rely=0.25)
         self.graphingPage = graphingWindow(master=self.root, app=self)
 
     def make_graphingWindow(self):
         self.frame.pack_forget()
-        self.graphingPage.frame.pack()
+        self.graphingPage.frame.pack(padx=0, pady=0)
 
 
 class graphingWindow:
     def __init__(self, master=None, app=None):
         self.master = master
         self.app = app
-        self.frame = tk.Frame(self.master, width=600, height=400)
-        tk.Button(self.frame, text="Exit", command=self.go_back).place(x=10, y=10)
-        tk.Label(self.frame, text="Graph Page", font=("Helvetica", 16)).place(x=240, y=10)
-        tk.Button(self.frame,text="equations", command=self.make_equationWindow).place(x=350, y=10)
-        tk.Button(self.frame, text="options", command=self.make_optionsWindow).place(x=450, y=10)
-        tk.Button(self.frame, text="help", command=self.make_helpWindow).place(x=550, y=10)
+        self.frame = tk.Frame(self.master, width=screen_width, height=screen_height)
+        tk.Button(self.frame, text="Exit", command=self.go_back).place(relx=0.016, rely=0.025)
+        tk.Label(self.frame, text="Graph Page", font=("Helvetica", 16)).place(relx=0.4, rely=0.025)
+        tk.Button(self.frame,text="Equations", command=self.make_equationWindow).place(relx=0.2, rely=0.025)
+        tk.Button(self.frame, text="Options", command=self.make_optionsWindow).place(relx=0.75, rely=0.025)
+        tk.Button(self.frame, text="help", command=self.make_helpWindow).place(relx=0.916, rely=0.025)
 
         self.equationPage = equationsWindow(master=self.master, app=self)
         self.optionsPage = optionsWindow(master=self.master, app=self)
@@ -52,9 +51,9 @@ class helpWindow:
     def __init__(self, master=None, app=None):
         self.master = master
         self.app = app
-        self.frame = tk.Frame(self.master, width=600, height=400)
-        tk.Button(self.frame, text="Exit", command=self.go_back).place(x=10,y=10)
-        tk.Label(self.frame, text="Help", font=("Helvetica", 16)).place(x=240, y=10)
+        self.frame = tk.Frame(self.master, width=screen_width, height=screen_height)
+        tk.Button(self.frame, text="Exit", command=self.go_back).place(relx=0.016,rely=0.025)
+        tk.Label(self.frame, text="Help", font=("Helvetica", 16)).place(relx=0.4, rely=0.025)
 
     def go_back(self):
         self.frame.pack_forget()
@@ -65,9 +64,9 @@ class optionsWindow:
     def __init__(self, master=None, app=None):
         self.master = master
         self.app = app
-        self.frame = tk.Frame(self.master, width=600, height=400)
-        tk.Button(self.frame, text="Exit", command=self.go_back).place(x=10,y=10)
-        tk.Label(self.frame, text="Options", font=("Helvetica", 16)).place(x=240, y=10)
+        self.frame = tk.Frame(self.master, width=screen_width, height=screen_height)
+        tk.Button(self.frame, text="Exit", command=self.go_back).place(relx=0.016,rely=0.025)
+        tk.Label(self.frame, text="Options", font=("Helvetica", 16)).place(relx=0.4, rely=0.025)
 
     def go_back(self):
         self.frame.pack_forget()
@@ -78,9 +77,9 @@ class equationsWindow:
     def __init__(self, master=None, app=None):
         self.master = master
         self.app = app
-        self.frame = tk.Frame(self.master, width=600, height=400)
-        tk.Button(self.frame, text="Exit", command=self.go_back).place(x=10,y=10)
-        tk.Label(self.frame, text="Equations", font=("Helvetica", 16)).place(x=240, y=10)
+        self.frame = tk.Frame(self.master, width=screen_width, height=screen_height)
+        tk.Button(self.frame, text="Exit", command=self.go_back).place(relx=0.025,rely=0.025)
+        tk.Label(self.frame, text="Equations", font=("Helvetica", 16)).place(relx=0.4, rely=0.025)
 
     def go_back(self):
         self.frame.pack_forget()
@@ -88,5 +87,17 @@ class equationsWindow:
 
 
 root = tk.Tk()
+
+# get the screen dimension
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
+# find the center point
+center_x = int(screen_width)
+center_y = int(screen_height)
+
+# set the position of the window to the center of the screen
+root.geometry(f'{screen_width}x{screen_height}')
+
 app = GraphingApp(root)
 root.mainloop()
