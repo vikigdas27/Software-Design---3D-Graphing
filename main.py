@@ -88,15 +88,9 @@ class equationsWindow:
 
 root = tk.Tk()
 
-# get the screen dimension
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
-# find the center point
-center_x = int(screen_width)
-center_y = int(screen_height)
-
-# set the position of the window to the center of the screen
 root.geometry(f'{screen_width}x{screen_height}')
 
 app = GraphingApp(root)
