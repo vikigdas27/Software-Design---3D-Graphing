@@ -1,41 +1,56 @@
 import tkinter as tk
 import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib import cm
 import numpy as np
+import pickle
+from matplotlib import cm
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,NavigationToolbar2Tk)
+
 
 matplotlib.use('TkAgg')
 
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import (
-    FigureCanvasTkAgg,
-    NavigationToolbar2Tk
-)
+'''
+Todo
+Make font size relative for all labels and buttons - maybe change frame size to a default like 1080 by 1920 or smthing
+we also need to set an aspect ratio 
+fix location issues
+fix entry 
+beetter graph
+'''
+
+
+
+
 
 class GraphingApp:
     def __init__(self, root=None):
         self.root = root
-        self.frame = tk.Frame(self.root, width=screen_width, height=screen_height)
+        self.frame = tk.Frame(self.root,bg='white', bd=10, width=screen_width, height=screen_height)
         self.frame.pack()
-        tk.Button(self.frame,text="Start Graphing", command=self.make_graphingWindow).place(relx=0.4, rely=0.5)
-        tk.Label(self.frame, text="GraphX", font=("Helvetica", 16)).place(relx=0.416, rely=0.125)
-        tk.Label(self.frame, text="The Premiere 3D Graphing Calculator", font=("Helvetica", 11)).place(relx=0.25, rely=0.25)
+        tk.Button(self.frame,text="Start Graphing", bg='gray', font = ("Helvetica"),command=self.make_graphingWindow).place(relx=0.42, rely=0.55,relheight =0.1 , relwidth = 0.2 )
+        tk.Label(self.frame, text="GraphX", bg='white', font=("Helvetica", 60)).place(relx=0.35, rely=0.15)
+        tk.Label(self.frame, text="The Premiere 3D Graphing Calculator",bg='white', font=("Helvetica", 20)).place(relx=0.25, rely=0.35)
         self.graphingPage = graphingWindow(master=self.root, app=self)
-
+        
     def make_graphingWindow(self):
         self.frame.pack_forget()
         self.graphingPage.frame.pack(padx=0, pady=0)
 
 
 class graphingWindow:
+    equation = ""
+    equationlist = []
+  
     def __init__(self, master=None, app=None):
         self.master = master
         self.app = app
         self.frame = tk.Frame(self.master, width=screen_width, height=screen_height)
-     
+
         self.equationPage = equationsWindow(master=self.master, app=self)
         self.optionsPage = optionsWindow(master=self.master, app=self)
         self.helpPage = helpWindow(master=self.master, app=self)
+        
         fig = plt.figure(figsize=plt.figaspect(0.5))
         figure_canvas = FigureCanvasTkAgg(fig, self.frame)
         ax = fig.add_subplot(1, 2, 1, projection='3d')
@@ -44,20 +59,24 @@ class graphingWindow:
         X, Y = np.meshgrid(X, Y)
         R = np.sqrt(X**2 + Y**2)
         Z = np.sin(R)
-        surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=cm.coolwarm,
-                       linewidth=0, antialiased=False)
+        surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=cm.coolwarm,linewidth=0, antialiased=False)
         ax.set_zlim(-1.01, 1.01)
         fig.colorbar(surf, shrink=0.5, aspect=10)
         figure_canvas.get_tk_widget().pack(side=tk.TOP, ipadx = 200, ipady= 200)  
-			
-        tk.Button(self.frame, text="Exit", command=self.go_back).place(relx=0.016, rely=0.025)
-        tk.Label(self.frame, text="Graph Page", font=("Helvetica", 16)).place(relx=0.4, rely=0.025)
-        tk.Button(self.frame,text="Equations", command=self.make_equationWindow).place(relx=0.2, rely=0.025)
-        tk.Button(self.frame, text="Options", command=self.make_optionsWindow).place(relx=0.75, rely=0.025)
-        tk.Button(self.frame, text="help", command=self.make_helpWindow).place(relx=0.916, rely=0.025)
+        
+        tk.Button(self.frame, text="Exit",font="Helvetica", command=self.go_back).place(relx=0.015, rely=0.015,relheight =0.05 , relwidth = 0.09)
+        tk.Label(self.frame, text="Graph Page", font=("Helvetica", 16)).place(relx=0.4, rely=0.015)
+        tk.Button(self.frame,text="Equations", font="Helvetica",command=self.make_equationWindow).place(relx=0.15, rely=0.015,relheight =0.05 , relwidth = 0.15)
+        tk.Button(self.frame, text="Options", font="Helvetica",command=self.make_optionsWindow).place(relx=0.725, rely=0.015,relheight =0.05 , relwidth = 0.12)
+        tk.Button(self.frame, text="help", font="Helvetica",command=self.make_helpWindow).place(relx=0.875, rely=0.015,relheight =0.05 , relwidth = 0.09)
+        self.word = tk.Entry(self.frame)
+        self.word.place(relx=0.5, rely=0.75)
         
         
-        
+        tk.Button(self.frame, text="Save", font="Helvetica",command=self.SaveEquation).place(relx=0.875, rely=0.9,relheight =0.05 , relwidth = 0.09)
+
+      
+
     def go_back(self):
         self.frame.pack_forget()
         self.app.frame.pack()
@@ -75,6 +94,15 @@ class graphingWindow:
         self.helpPage.frame.pack()
 
 
+
+    def SaveEquation(self):
+        self.equation = self.word.get()
+        self.equationlist.append(self.equation)
+        print(self.equationlist)
+        
+
+
+
 class helpWindow:
     def __init__(self, master=None, app=None):
         self.master = master
@@ -82,6 +110,7 @@ class helpWindow:
         self.frame = tk.Frame(self.master, width=screen_width, height=screen_height)
         tk.Button(self.frame, text="Exit", command=self.go_back).place(relx=0.016,rely=0.025)
         tk.Label(self.frame, text="Help", font=("Helvetica", 16)).place(relx=0.4, rely=0.025)
+      
 
     def go_back(self):
         self.frame.pack_forget()
@@ -108,7 +137,7 @@ class equationsWindow:
         self.frame = tk.Frame(self.master, width=screen_width, height=screen_height)
         tk.Button(self.frame, text="Exit", command=self.go_back).place(relx=0.025,rely=0.025)
         tk.Label(self.frame, text="Equations", font=("Helvetica", 16)).place(relx=0.4, rely=0.025)
-
+        
     def go_back(self):
         self.frame.pack_forget()
         self.app.frame.pack()
@@ -116,6 +145,7 @@ class equationsWindow:
 
 root = tk.Tk()
 
+root.minsize(600, 400)
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
