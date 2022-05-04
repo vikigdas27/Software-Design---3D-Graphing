@@ -19,9 +19,6 @@ beetter graph
 '''
 
 
-
-
-
 class GraphingApp:
 		def __init__(self, root=None):
 				self.root = root
@@ -112,9 +109,9 @@ class helpWindow:
 		def __init__(self, master=None, app=None):
 				self.master = master
 				self.app = app
-				self.frame = tk.Frame(self.master, width=screen_width, height=screen_height)
+				self.frame = tk.Frame(self.master,bg='white', bd=10, width=screen_width, height=screen_height)
 				tk.Button(self.frame, text="Exit", command=self.go_back).place(relx=0.016,rely=0.025)
-				tk.Label(self.frame, text="Help", font=("Helvetica", 16)).place(relx=0.4, rely=0.025)
+				tk.Label(self.frame, text="Help", bg='white', font=("Helvetica", int(scal/3))).place(relx=.5, rely=.05,anchor= tk.CENTER)
 				
 				
 		def go_back(self):
@@ -126,9 +123,9 @@ class optionsWindow:
 		def __init__(self, master=None, app=None):
 				self.master = master
 				self.app = app
-				self.frame = tk.Frame(self.master, width=screen_width, height=screen_height)
+				self.frame = tk.Frame(self.master,bg='white', bd=10, width=screen_width, height=screen_height)
 				tk.Button(self.frame, text="Exit", command=self.go_back).place(relx=0.016,rely=0.025)
-				tk.Label(self.frame, text="Options", font=("Helvetica", 16)).place(relx=0.4, rely=0.025)
+				tk.Label(self.frame, text="Options", bg='white', font=("Helvetica", int(scal/3))).place(relx=.5, rely=.05,anchor= tk.CENTER)
 
 				
 		def go_back(self):
@@ -140,9 +137,9 @@ class equationsWindow:
 		def __init__(self, master=None, app=None):
 				self.master = master
 				self.app = app
-				self.frame = tk.Frame(self.master, width=screen_width, height=screen_height)
+				self.frame = tk.Frame(self.master,bg='white', bd=10, width=screen_width, height=screen_height)
 				tk.Button(self.frame, text="Exit", command=self.go_back).place(relx=0.025,rely=0.025)
-				tk.Label(self.frame, text="Equations", font=("Helvetica", 16)).place(relx=0.4, rely=0.025)
+				tk.Label(self.frame, text="Equations", bg='white', font=("Helvetica", int(scal/3))).place(relx=.5, rely=.05,anchor= tk.CENTER)
 				tk.Label(self.frame, text = "graphingWindow.temp", font=("Helvetica", 16)).place(relx=0.4, rely=0.2)
 				
 				
