@@ -22,7 +22,7 @@ beetter graph
 class GraphingApp:
 		def __init__(self, root=None):
 				self.root = root
-				self.frame = tk.Frame(self.root,bg='white', bd=10, width=screen_width, height=screen_height)
+				self.frame = tk.Frame(self.root,bg='white', width=screen_width, height=screen_height)
 				self.frame.pack()
 				tk.Button(self.frame,text="Start Graphing", bg='gray', font = ("Helvetica", int(scal/4)),command=self.make_graphingWindow).place(relx=.5, rely=.7,anchor= tk.CENTER,relheight =screen_height/(10*screen_height) , relwidth = screen_width/(5*screen_width) )
 				tk.Label(self.frame, text="GraphX", bg='white', font=("Helvetica", scal)).place(relx=.5, rely=.3,anchor= tk.CENTER)
@@ -109,8 +109,8 @@ class helpWindow:
 		def __init__(self, master=None, app=None):
 				self.master = master
 				self.app = app
-				self.frame = tk.Frame(self.master,bg='white', bd=10, width=screen_width, height=screen_height)
-				tk.Button(self.frame, text="Exit", command=self.go_back).place(relx=0.016,rely=0.025)
+				self.frame = tk.Frame(self.master,bg='white', width=screen_width, height=screen_height)
+				tk.Button(self.frame, text="Exit",font=("Helvetica", int(scal/4)), command=self.go_back).place(relx=0.025, rely=.025,relheight =screen_height/(20*screen_height) , relwidth = screen_width/(15*screen_width))
 				tk.Label(self.frame, text="Help", bg='white', font=("Helvetica", int(scal/3))).place(relx=.5, rely=.05,anchor= tk.CENTER)
 				
 				
@@ -123,8 +123,8 @@ class optionsWindow:
 		def __init__(self, master=None, app=None):
 				self.master = master
 				self.app = app
-				self.frame = tk.Frame(self.master,bg='white', bd=10, width=screen_width, height=screen_height)
-				tk.Button(self.frame, text="Exit", command=self.go_back).place(relx=0.016,rely=0.025)
+				self.frame = tk.Frame(self.master,bg='white',  width=screen_width, height=screen_height)
+				tk.Button(self.frame, text="Exit",font=("Helvetica", int(scal/4)), command=self.go_back).place(relx=0.025, rely=.025,relheight =screen_height/(20*screen_height) , relwidth = screen_width/(15*screen_width))
 				tk.Label(self.frame, text="Options", bg='white', font=("Helvetica", int(scal/3))).place(relx=.5, rely=.05,anchor= tk.CENTER)
 
 				
@@ -137,8 +137,8 @@ class equationsWindow:
 		def __init__(self, master=None, app=None):
 				self.master = master
 				self.app = app
-				self.frame = tk.Frame(self.master,bg='white', bd=10, width=screen_width, height=screen_height)
-				tk.Button(self.frame, text="Exit", command=self.go_back).place(relx=0.025,rely=0.025)
+				self.frame = tk.Frame(self.master,bg='white',  width=screen_width, height=screen_height)
+				tk.Button(self.frame, text="Exit",font=("Helvetica", int(scal/4)), command=self.go_back).place(relx=0.025, rely=.025,relheight =screen_height/(20*screen_height) , relwidth = screen_width/(15*screen_width))
 				tk.Label(self.frame, text="Equations", bg='white', font=("Helvetica", int(scal/3))).place(relx=.5, rely=.05,anchor= tk.CENTER)
 				tk.Label(self.frame, text = "graphingWindow.temp", font=("Helvetica", 16)).place(relx=0.4, rely=0.2)
 				
