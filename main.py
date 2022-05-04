@@ -7,7 +7,6 @@ from matplotlib import cm
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,NavigationToolbar2Tk)
 
-
 matplotlib.use('TkAgg')
 
 '''
@@ -28,9 +27,15 @@ class GraphingApp:
         self.root = root
         self.frame = tk.Frame(self.root,bg='white', bd=10, width=screen_width, height=screen_height)
         self.frame.pack()
-        tk.Button(self.frame,text="Start Graphing", bg='gray', font = ("Helvetica"),command=self.make_graphingWindow).place(relx=0.42, rely=0.55,relheight =0.1 , relwidth = 0.2 )
-        tk.Label(self.frame, text="GraphX", bg='white', font=("Helvetica", 60)).place(relx=0.35, rely=0.15)
-        tk.Label(self.frame, text="The Premiere 3D Graphing Calculator",bg='white', font=("Helvetica", 20)).place(relx=0.25, rely=0.35)
+      
+        tk.Button(self.frame,text="Start Graphing", bg='gray', font = ("Helvetica", int(scal/4)),command=self.make_graphingWindow).place(relx=.5, rely=.7,anchor= tk.CENTER,relheight =screen_height/(10*screen_height) , relwidth = screen_width/(5*screen_width) )
+      
+        tk.Label(self.frame, text="GraphX", bg='white', font=("Helvetica", scal)).place(relx=.5, rely=.3,anchor= tk.CENTER)
+
+      
+        tk.Label(self.frame, text="The Premiere 3D Graphing Calculator",bg='white', font=("Helvetica", int(scal/3))).place(relx=.5, rely=.5,anchor= tk.CENTER )
+
+      
         self.graphingPage = graphingWindow(master=self.root, app=self)
         
     def make_graphingWindow(self):
@@ -41,6 +46,7 @@ class GraphingApp:
 class graphingWindow:
     equation = ""
     equationlist = []
+    temp = ""
   
     def __init__(self, master=None, app=None):
         self.master = master
@@ -99,7 +105,10 @@ class graphingWindow:
         self.equation = self.word.get()
         self.equationlist.append(self.equation)
         print(self.equationlist)
-        
+
+        for x in graphingWindow.equationlist:
+          self.temp += x + '\n' 
+
 
 
 
@@ -110,7 +119,8 @@ class helpWindow:
         self.frame = tk.Frame(self.master, width=screen_width, height=screen_height)
         tk.Button(self.frame, text="Exit", command=self.go_back).place(relx=0.016,rely=0.025)
         tk.Label(self.frame, text="Help", font=("Helvetica", 16)).place(relx=0.4, rely=0.025)
-      
+
+
 
     def go_back(self):
         self.frame.pack_forget()
@@ -131,6 +141,7 @@ class optionsWindow:
 
 
 class equationsWindow:
+
     def __init__(self, master=None, app=None):
         self.master = master
         self.app = app
@@ -138,17 +149,23 @@ class equationsWindow:
         tk.Button(self.frame, text="Exit", command=self.go_back).place(relx=0.025,rely=0.025)
         tk.Label(self.frame, text="Equations", font=("Helvetica", 16)).place(relx=0.4, rely=0.025)
         
+        tk.Label(self.frame, text = "graphingWindow.temp", font=("Helvetica", 16)).place(relx=0.4, rely=0.2)
+
+      
     def go_back(self):
         self.frame.pack_forget()
         self.app.frame.pack()
 
 
 root = tk.Tk()
+scal = int(root.winfo_screenwidth()/16)
+if scal < 55:
+    scal = 55
 
-root.minsize(600, 400)
-screen_width = root.winfo_screenwidth()
-screen_height = root.winfo_screenheight()
-
+screen_width = 16*scal
+print(screen_width)
+screen_height = 9*scal
+print(screen_height)
 root.geometry(f'{screen_width}x{screen_height}')
 
 app = GraphingApp(root)
