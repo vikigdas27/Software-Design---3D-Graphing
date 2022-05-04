@@ -39,8 +39,7 @@ class graphingWindow:
 		equation = ""
 		equationlist = []
 		temp = ""
-		
-		
+
 		def __init__(self, master=None, app=None):
 				self.master = master
 				self.app = app
@@ -71,7 +70,7 @@ class graphingWindow:
 				tk.Button(self.frame, text="Help", font=("Helvetica", int(scal/4)),command=self.make_helpWindow).place(relx=0.9, rely=.025,relheight =screen_height/(20*screen_height) , relwidth =screen_width/(15*screen_width))
 				self.word = tk.Entry(self.frame)
 				self.word.place(relx=0.5, rely=0.75)
-				tk.Button(self.frame, text="Save", font=("Helvetica", int(scal/4)),command=self.SaveEquation).place(relx=0.9, rely=.915,relheight =screen_height/(20*screen_height) , relwidth =screen_width/(15*screen_width))
+				tk.Button(self.frame, text="Save", font=("Helvetica", int(scal/4)),command=self.SaveEquation).place(relx=0.9, rely=.9,relheight =screen_height/(20*screen_height) , relwidth =screen_width/(15*screen_width))
 				
 				
 		def go_back(self):
@@ -82,6 +81,7 @@ class graphingWindow:
 		def make_equationWindow(self):
 				self.frame.pack_forget()
 				self.equationPage.frame.pack()
+				
 				
 				
 		def make_optionsWindow(self):
@@ -98,9 +98,10 @@ class graphingWindow:
 				self.equation = self.word.get()
 				self.equationlist.append(self.equation)
 				print(self.equationlist)
-				
+				graphingWindow.temp = ""
 				for x in graphingWindow.equationlist:
-						self.temp += x + '\n' 
+						graphingWindow.temp += x + '\n' 
+				print(graphingWindow.temp)
 
 
 
@@ -125,12 +126,18 @@ class optionsWindow:
 				self.app = app
 				self.frame = tk.Frame(self.master,bg='white',  width=screen_width, height=screen_height)
 				tk.Button(self.frame, text="Exit",font=("Helvetica", int(scal/4)), command=self.go_back).place(relx=0.025, rely=.025,relheight =screen_height/(20*screen_height) , relwidth = screen_width/(15*screen_width))
+				tk.Button(self.frame, text="Apply", font=("Helvetica", int(scal/4)),command=self.apply_set).place(relx=0.9, rely=.9,relheight =screen_height/(20*screen_height) , relwidth =screen_width/(12*screen_width))
+				
 				tk.Label(self.frame, text="Options", bg='white', font=("Helvetica", int(scal/3))).place(relx=.5, rely=.05,anchor= tk.CENTER)
-
+				
 				
 		def go_back(self):
 				self.frame.pack_forget()
 				self.app.frame.pack()
+
+		def apply_set(self):
+				self.app.frame.pack()
+				self.frame.pack()
 				
 				
 class equationsWindow:
@@ -140,18 +147,29 @@ class equationsWindow:
 				self.frame = tk.Frame(self.master,bg='white',  width=screen_width, height=screen_height)
 				tk.Button(self.frame, text="Exit",font=("Helvetica", int(scal/4)), command=self.go_back).place(relx=0.025, rely=.025,relheight =screen_height/(20*screen_height) , relwidth = screen_width/(15*screen_width))
 				tk.Label(self.frame, text="Equations", bg='white', font=("Helvetica", int(scal/3))).place(relx=.5, rely=.05,anchor= tk.CENTER)
-				tk.Label(self.frame, text = "graphingWindow.temp", font=("Helvetica", 16)).place(relx=0.4, rely=0.2)
+	
+				tk.Button(self.frame, text="Update", font=("Helvetica", int(scal/4)),command=self.updater).place(relx=0.9, rely=.9,relheight =screen_height/(20*screen_height) , relwidth =screen_width/(10*screen_width))
+				
+				self.fix = tk.Label(self.frame,bg='white', text = graphingWindow.temp, font=("Helvetica", int(scal/3)))
+				self.fix.place(relx=0.1, rely=0.1)
 				
 				
 		def go_back(self):
 				self.frame.pack_forget()
 				self.app.frame.pack()
+			
+		def updater(self):
+				self.fix.config(text=graphingWindow.temp) 
+				
+
+
+
 				
 				
 root = tk.Tk()
 scal = int(root.winfo_screenwidth()/16)
-if scal < 50:
-		scal = 50
+if scal < 25:
+		scal = 25
 
 screen_width = 16*scal
 print(screen_width)
