@@ -158,12 +158,10 @@ class equationsWindow:
 	def updater(self):
 		print("called")
 		self.fix.config(text=graphingWindow.temp) 
-				
 
 
 
-				
-				
+
 root = tk.Tk()
 scal = int(root.winfo_screenwidth()/16)
 if scal < 25:
