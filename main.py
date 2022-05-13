@@ -37,6 +37,12 @@ class graphingWindow:
 	equationlist = []
 	temp = ""
 
+	def func(self, x, y):
+		return np.sin(np.sqrt(x**2 + y**2))
+
+	def func1(self, x, y):
+		return np.sqrt(x**2 + y**2)
+
 	def __init__(self, master=None, app=None):
 		self.master = master
 		self.app = app
@@ -45,20 +51,12 @@ class graphingWindow:
 		self.equationPage = equationsWindow(master=self.master, app=self)
 		self.optionsPage = optionsWindow(master=self.master, app=self)
 		self.helpPage = helpWindow(master=self.master, app=self)
-        
-		fig = plt.figure(figsize=plt.figaspect(0.5))
-		figure_canvas = FigureCanvasTkAgg(fig, self.frame)
-		ax = fig.add_subplot(1, 2, 1, projection='3d')
-		X = np.arange(-5, 5, 0.25)
-		Y = np.arange(-5, 5, 0.25)
-		X, Y = np.meshgrid(X, Y)
-		R = np.sqrt(X**2 + Y**2)
-		Z = np.sin(R)
-		surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=cm.coolwarm,linewidth=0, antialiased=False)
-		ax.set_zlim(-1.01, 1.01)
-		fig.colorbar(surf, shrink=0.5, aspect=10)
-		figure_canvas.get_tk_widget().pack(side=tk.TOP, ipadx = 200, ipady= 200)  
 
+		x = np.arange(-5, 5, 0.25)
+		y = np.arange(-5, 5, 0.25)
+
+		self.graph(x, y, self.func)
+		
 		tk.Label(self.frame, text="Graph Page", bg='white', font=("Helvetica", int(scal/3))).place(relx=.5, rely=.05,anchor= tk.CENTER)
 			
 		tk.Button(self.frame, text="Exit",font=("Helvetica", int(scal/4)), command=self.go_back).place(relx=0.025, rely=.025,relheight =screen_height/(20*screen_height) , relwidth = screen_width/(15*screen_width))
@@ -67,14 +65,26 @@ class graphingWindow:
 		tk.Button(self.frame, text="Help", font=("Helvetica", int(scal/4)),command=self.make_helpWindow).place(relx=0.9, rely=.025,relheight =screen_height/(20*screen_height) , relwidth =screen_width/(15*screen_width))
 		self.word = tk.Entry(self.frame)
 		self.word.place(relx=0.5, rely=0.75)
-		tk.Button(self.frame, text="Save", font=("Helvetica", int(scal/4)),command=self.SaveEquation).place(relx=0.9, rely=.9,relheight =screen_height/(20*screen_height) , relwidth =screen_width/(15*screen_width))
-				
-				
+		tk.Button(self.frame, text="Save", font=("Helvetica", int(scal/4)),command=lambda: [self.SaveEquation, self.graph(x, y, self.func1)]).place(relx=0.9, rely=.9,relheight =screen_height/(20*screen_height) , relwidth =screen_width/(15*screen_width))
+
 	def go_back(self):
 		self.frame.pack_forget()
 		self.app.frame.pack()
-				
-				
+
+	def graph(self, X, Y, Z):
+		fig = plt.figure(figsize=plt.figaspect(0.5))
+		plt.ion()
+		ax = fig.add_subplot(1, 2, 1, projection='3d')
+		X, Y = np.meshgrid(X, Y)
+		Z = Z(X, Y)
+		print(Z)
+		ax.clear()
+		surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=cm.coolwarm,linewidth=0, antialiased=False)
+		ax.set_zlim(-1.01, 1.01)
+		fig.colorbar(surf, shrink=0.5, aspect=10)
+		figure_canvas = FigureCanvasTkAgg(fig, self.frame)
+		figure_canvas.get_tk_widget().pack(side=tk.TOP, ipadx = 200, ipady= 200)
+		
 	def make_equationWindow(self):
 		self.frame.pack_forget()
 		self.equationPage.frame.pack()
