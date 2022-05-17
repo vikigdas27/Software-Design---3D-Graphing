@@ -6,6 +6,8 @@ import pickle
 from matplotlib import cm
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,NavigationToolbar2Tk)
+import lib.db as db
+import os.path
 
 matplotlib.use('TkAgg')
 
@@ -67,6 +69,15 @@ class graphingWindow:
 		self.word.place(relx=0.5, rely=0.75)
 		tk.Button(self.frame, text="Save", font=("Helvetica", int(scal/4)),command=lambda: [self.SaveEquation, self.graph(x, y, self.func1)]).place(relx=0.9, rely=.9,relheight =screen_height/(20*screen_height) , relwidth =screen_width/(15*screen_width))
 
+		##########################
+		# Demo stuff
+		tk.Button(self.frame, text="demo Add",font=("Helvetica", int(scal/4)), command=lambda: db.addSaved("billybob", self.word.get())).place(relx=0.1, rely=.1,relheight =screen_height/(20*screen_height) , relwidth = screen_width/(9*screen_width))
+		tk.Button(self.frame, text="demo Remove",font=("Helvetica", int(scal/4)), command=lambda: db.removeSaved("billybob", self.word.get())).place(relx=0.15, rely=.15,relheight =screen_height/(20*screen_height) , relwidth = screen_width/(6*screen_width))
+
+	###############################
+	# End demo stuff
+
+		
 	def go_back(self):
 		self.frame.pack_forget()
 		self.app.frame.pack()
@@ -77,7 +88,6 @@ class graphingWindow:
 		ax = fig.add_subplot(1, 2, 1, projection='3d')
 		X, Y = np.meshgrid(X, Y)
 		Z = Z(X, Y)
-		print(Z)
 		ax.clear()
 		surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=cm.coolwarm,linewidth=0, antialiased=False)
 		ax.set_zlim(-1.01, 1.01)
@@ -167,10 +177,18 @@ class equationsWindow:
 			
 	def updater(self):
 		print("called")
+		graphingWindow.temp = db.getSaved("billybob")
 		self.fix.config(text=graphingWindow.temp) 
 
 
 
+if(not os.path.exists("database.db")):
+	db.setupDatabase("database.db")
+else:
+	print("Database already exists")
+
+### Testing database
+db.test("x^2 + 2xy + y^2")
 
 root = tk.Tk()
 scal = int(root.winfo_screenwidth()/16)
